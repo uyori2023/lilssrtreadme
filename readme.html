@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lilSSRT README</title>
+  <link rel="stylesheet" href="readme-assets/styles.css?v=20260716">
+</head>
+<body>
+  <svg class="svg-defs" aria-hidden="true" focusable="false">
+    <symbol id="cost-on" viewBox="0 0 12 12">
+      <path d="M1 2h10L6 10z"></path>
+    </symbol>
+    <symbol id="cost-off" viewBox="0 0 12 12">
+      <path d="M1 2h10L6 10z"></path>
+    </symbol>
+  </svg>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="wipe" aria-hidden="true"></div>
+  <div class="fixed-light" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#boot" data-route="boot">
+      <span class="brand-box">RT</span>
+      <span>
+        <strong>lilSSRT</strong>
+        <small data-i18n="brand.subtitle">README</small>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="README navigation">
+      <a href="#boot" data-route="boot">BOOT<small data-i18n="nav.boot">overview</small></a>
+      <a href="#setup" data-route="setup">SETUP<small data-i18n="nav.setup">install</small></a>
+      <a href="#ao" data-route="ao">AO<small data-i18n="nav.ao">config</small></a>
+      <a href="#light" data-route="light">LIGHT<small data-i18n="nav.light">bounce</small></a>
+      <a href="#qa" data-route="qa">Q&A<small data-i18n="nav.qa">tips</small></a>
+    </nav>
+
+    <div class="language-switch" aria-label="Language">
+      <button type="button" data-lang="ja">JP</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+  </header>
+
+  <main class="stage" id="app">
+    <section class="view boot is-active" data-view="boot">
+      <div class="boot-hero">
+        <div class="center-mark intro-scope">
+          <div class="terminal-logo" aria-hidden="true">
+            <i class="logo-line"></i>
+            <i class="logo-corner logo-corner-left"></i>
+            <i class="logo-corner logo-corner-right"></i>
+            <strong class="scatter-word">
+              <span class="scatter from-left" data-char="S">S</span>
+              <span class="scatter from-top" data-char="S">S</span>
+              <span class="scatter from-bottom" data-char="R">R</span>
+              <span class="scatter from-right" data-char="T">T</span>
+            </strong>
+            <span class="logo-caption">SCREEN SPACE RAY TRACING</span>
+          </div>
+          <p class="ghost-label" data-i18n="boot.ghost">AO / BOUNCE LIGHT</p>
+          <p class="lead" data-i18n-html="boot.lead">
+            lilSSRT は AO / ライティング拡張です。<br>
+            AO は <code>RTAO</code> / <code>GTAO</code> と、GPU クラス別の品質プリセットを選択できます。
+          </p>
+          <div class="actions">
+            <a class="button dark" href="#setup" data-route="setup" data-i18n="boot.setupButton">SETUP GUIDE</a>
+            <a class="button" href="#ao" data-route="ao" data-i18n="boot.aoButton">AO CONFIG</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="home-preview">
+        <article class="terminal identity">
+          <div class="terminal-head"><span>AO before / after</span><span>RTAO / GTAO</span></div>
+          <p class="compare-note" data-i18n="boot.aoCompare">
+            画面上の深度から接地感と隙間の陰影を補強する AO アルゴリズムです。
+          </p>
+          <div class="compare-grid">
+            <figure>
+              <img src="readme-assets/images/ssrt_off.png" alt="AO 適用前">
+              <figcaption>AO OFF</figcaption>
+            </figure>
+            <figure>
+              <img src="readme-assets/images/ssrt_on.png" alt="AO 適用後">
+              <figcaption>GTAO</figcaption>
+            </figure>
+          </div>
+        </article>
+        <article class="terminal identity">
+          <div class="terminal-head"><span>light before / after</span><span>Fake Bounce Light</span></div>
+          <p class="compare-note" data-i18n="boot.lightCompare">
+            AO とは独立して、カメラ基準の疑似バウンスライトを追加できます。
+          </p>
+          <div class="compare-grid">
+            <figure>
+              <img src="readme-assets/images/light_off.png" alt="Fake Bounce Light OFF">
+              <figcaption>Fake Bounce OFF</figcaption>
+            </figure>
+            <figure>
+              <img src="readme-assets/images/light_on.png" alt="Fake Bounce Light ON">
+              <figcaption>Fake Bounce ON</figcaption>
+            </figure>
+          </div>
+        </article>
+      </div>
+
+      <footer class="site-footer">
+        <div>
+          <strong>LICENSE</strong>
+          <span><a href="license/20260519024807vn3license_ja.pdf" target="_blank" rel="noopener">VN3 License</a></span>
+        </div>
+        <div>
+          <strong>PACKAGE</strong>
+          <span data-i18n="footer.package">lilSSRT</span>
+        </div>
+      </footer>
+    </section>
+
+    <section class="view content" data-view="setup">
+      <div class="content-shell">
+        <p class="path">/SYSTEM/SETUP</p>
+        <h2>SETUP</h2>
+        <p class="content-lead" data-i18n-html="setup.lead">
+          lilSSRT の基本導入手順です。<br>
+          まずインポートして、マテリアル設定と AO 設定を行います。
+        </p>
+        <article class="note-panel">
+          <strong data-i18n="setup.requirements.title">Requirements</strong>
+          <p data-i18n-html="setup.requirements.body">
+            lilSSRT は <code>lilToon</code> と <code>Modular Avatar</code> が導入済みのプロジェクトで使用してください。<br>
+            <code>lilSSRT.prefab</code> は Modular Avatar のコンポーネントを使用しています。
+          </p>
+        </article>
+        <div class="grid-list setup-steps">
+          <article>
+            <span>01</span>
+            <strong data-i18n="setup.step1.title">Import</strong>
+            <p data-i18n-html="setup.step1.body"><code>lilSSRT*.unitypackage</code> を Unity にインポートします。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <strong data-i18n="setup.step2.title">Shader Select</strong>
+            <p data-i18n-html="setup.step2.body">対象マテリアルを右クリックし、<code>Assets/lilSSRT/Convert material to lilSSRT</code> を選択します。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <strong data-i18n="setup.step3.title">Prefab</strong>
+            <p data-i18n-html="setup.step3.body"><code>Assets/MeltzzZ/lilSSRT/lilSSRT.prefab</code> をアバター直下へ配置します。</p>
+          </article>
+          <article>
+            <span>04</span>
+            <strong data-i18n="setup.step4.title">Enable AO</strong>
+            <p data-i18n-html="setup.step4.body">マテリアル Inspector の <code>lilSSRT Occlusion</code> で AO を有効にし、Algorithm を選択します。</p>
+          </article>
+          <article class="next-step">
+            <span>05</span>
+            <strong data-i18n="setup.step5.title">Adjust</strong>
+            <p data-i18n-html="setup.step5.body">次は AO ページで Algorithm と負荷目安を確認します。通常は <code>Quality</code> で調整し、必要な場合のみ <code>Advanced</code> を開いて詳細を調整します。</p>
+            <a class="card-button" href="#ao" data-route="ao" data-i18n="setup.step5.button">AO PAGE</a>
+          </article>
+        </div>
+
+        <article class="note-panel setup-mask-tip">
+          <strong data-i18n="setup.maskTip.title">Tips: 目に AO がかかる場合</strong>
+          <p data-i18n-html="setup.maskTip.body">
+            目や白目に AO がかかって暗くなる場合は、<code>Mask</code> を使用して AO の適用範囲から外してください。<br>
+            マスクは白い部分に AO が適用され、黒い部分には適用されません。必要に応じて <code>Invert Mask</code> と <code>Mask Strength</code> も調整できます。
+          </p>
+          <div class="setup-mask-compare">
+            <figure>
+              <div class="setup-tip-image">
+                <img src="readme-assets/images/eye_ao_mask_off.png" alt="目にAOが適用されている状態" data-placeholder="MASK OFF IMAGE">
+              </div>
+              <figcaption data-i18n="setup.maskTip.offCaption">MASK OFF — 目にも AO が適用されます</figcaption>
+            </figure>
+            <figure>
+              <div class="setup-tip-image">
+                <img src="readme-assets/images/eye_ao_mask_on.png" alt="マスクで目のAOを除外した状態" data-placeholder="MASK ON IMAGE">
+              </div>
+              <figcaption data-i18n="setup.maskTip.onCaption">MASK ON — 目を AO の適用範囲から外します</figcaption>
+            </figure>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="view content" data-view="ao">
+      <div class="content-shell">
+        <p class="path">/SYSTEM/AO_CONFIG</p>
+        <h2>AO</h2>
+        <p class="content-lead" data-i18n-html="ao.lead">
+          lilSSRT Occlusion は Inspector 上で Main / Mask / Algorithm / Advanced に分かれています。<br>
+          まず Main と Algorithm を調整し、必要な場合だけ Advanced を開きます。
+        </p>
+        <p class="content-lead ao-cost-note" data-i18n-html="ao.costNote">
+          Quality は GPU クラス別の5段階プリセットです。Rays / Slices、Steps、評価方式をまとめて管理します。<br>
+          通常は <code>Auto</code> のまま使用し、負荷を抑えたい場合は Quality を下げます。
+        </p>
+
+        <div class="grid-list three ao-summary">
+          <article><span>MAIN</span><strong data-i18n="ao.summary.main.title">Main Controls</strong><p data-i18n="ao.summary.main.body">Enable / Strength / Contrast / Radius / Debug / Color / Multi-Scale AO</p></article>
+          <article><span>ALGORITHM</span><strong data-i18n="ao.summary.algorithm.title">RTAO / GTAO</strong><p data-i18n-html="ao.summary.algorithm.body"><code>GTAO</code> は広い陰影、<code>RTAO</code> は接触影寄りです。</p></article>
+          <article><span>QUALITY</span><strong data-i18n="ao.summary.advanced.title">Preset &amp; Evaluation</strong><p data-i18n="ao.summary.advanced.body">Quality / Evaluation / Vertex AO</p></article>
+        </div>
+
+        <article class="note-panel ao-tip-panel">
+          <strong data-i18n="ao.tip.shadowColor.title">Tips</strong>
+          <p data-i18n-html="ao.tip.shadowColor.body">
+            AO の <code>Color</code> は、かけたいマテリアルの影色に合わせると、自然に入ります。
+          </p>
+        </article>
+
+        <div class="terminal-table ao-main-table">
+          <table>
+            <thead><tr><th data-i18n="table.group">GROUP</th><th data-i18n="table.item">ITEM</th><th data-i18n="table.note">NOTE</th><th data-i18n="table.cost">FPS COST</th></tr></thead>
+            <tbody>
+              <tr><td data-i18n="ao.group.main">Main</td><td data-i18n="ao.item.enable">Enable</td><td data-i18n="ao.main.enable">AO の ON/OFF です。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              <tr><td data-i18n="ao.group.main">Main</td><td data-i18n="ao.item.strength">Strength</td><td data-i18n="ao.main.strength">AO の強さです。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              <tr><td data-i18n="ao.group.main">Main</td><td data-i18n="ao.item.contrast">Contrast</td><td data-i18n="ao.main.contrast">AO の濃淡差を調整します。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              <tr><td data-i18n="ao.group.main">Main</td><td data-i18n="ao.item.radius">Radius</td><td data-i18n="ao.main.radius">探索半径です。大きいほど広い影になります。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              <tr><td data-i18n="ao.group.main">Main</td><td data-i18n="ao.item.debug">Debug</td><td data-i18n-html="ao.main.debug"><code>Off / AO_Only / Depth / ScreenUV</code> の確認表示です。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              <tr><td data-i18n="ao.group.main">Main</td><td data-i18n="ao.item.color">Color</td><td data-i18n="ao.main.color">AO の色とアルファによる効き具合を調整します。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              <tr><td data-i18n="ao.group.mask">Mask</td><td data-i18n="ao.item.mask">Mask</td><td data-i18n="ao.mask.mask">AO の適用範囲をテクスチャで制御します。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              <tr><td data-i18n="ao.group.mask">Mask</td><td data-i18n="ao.item.invertMask">Invert Mask</td><td data-i18n="ao.mask.invert">マスクの白黒を反転します。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              <tr><td data-i18n="ao.group.mask">Mask</td><td data-i18n="ao.item.maskStrength">Mask Strength</td><td data-i18n="ao.mask.strength">0 でマスクを無視し、1 でマスクを完全に適用します。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              <tr><td data-i18n="ao.group.algorithm">Algorithm</td><td>GTAO</td><td data-i18n="ao.algorithmCost.gtao">方向スライスを使い、広めで滑らかな陰影を作ります。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              <tr><td data-i18n="ao.group.algorithm">Algorithm</td><td>RTAO</td><td data-i18n="ao.algorithmCost.rtao">スクリーン空間レイを使い、接触影寄りの陰影を作ります。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              <tr><td data-i18n="ao.group.algorithm">Algorithm</td><td data-i18n="ao.item.quality">Quality</td><td data-i18n-html="ao.algorithm.quality"><code>Low / Medium / High / Very High / ScreenShot</code> の5段階です。GPU クラスの目安が Inspector に表示されます。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg></span></td></tr>
+              <tr><td data-i18n="ao.group.algorithm">Algorithm</td><td data-i18n="ao.item.evaluation">Evaluation</td><td data-i18n-html="ao.algorithm.evaluation"><code>Auto / Vertex / Pixel</code> から評価方式を選択します。Auto は Low～High で Vertex、Very High 以上で Pixel を使用します。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              <tr><td data-i18n="ao.group.algorithm">Algorithm</td><td data-i18n="ao.item.vertexPhases">Vertex AO Phases</td><td data-i18n-html="ao.algorithm.vertexPhases"><code>1 Phase / 2 Phases</code> を選択します。2 Phases は Low 以外の Vertex 評価時に使用されます。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              <tr><td data-i18n="ao.group.algorithm">Algorithm</td><td data-i18n="ao.item.vertexTessellation">Vertex AO Tessellation</td><td data-i18n-html="ao.algorithm.vertexTessellation"><code>Auto / Off / x2 / x3</code> から選択します。対応シェーダーの Vertex 評価時のみ有効です。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <details class="drop-table">
+          <summary><span data-i18n="ao.multiscale.title">Multi-Scale AO Settings</span></summary>
+          <div class="terminal-table">
+            <table>
+              <thead><tr><th data-i18n="table.group">GROUP</th><th data-i18n="table.item">ITEM</th><th data-i18n="table.note">NOTE</th><th data-i18n="table.cost">FPS COST</th></tr></thead>
+              <tbody>
+                <tr><td data-i18n="ao.group.multiscale">Multi-Scale</td><td data-i18n="ao.item.multiscale">Multi-Scale AO</td><td data-i18n-html="ao.multiscale.enable">Near / Mid / Far の3段階で AO を調整します。有効時は品質プリセットの Steps が1.5倍になります。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg><svg><use href="#cost-on"></use></svg></span></td></tr>
+                <tr><td data-i18n="ao.group.multiscale">Multi-Scale</td><td data-i18n="ao.item.overall">Overall Strength / Radius</td><td data-i18n="ao.multiscale.overall">全距離帯へ共通で掛かる強度と半径倍率です。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td>Near</td><td data-i18n="ao.item.near">Near Radius / Strength</td><td data-i18n="ao.multiscale.near">接触付近の AO 半径と強度を調整します。色は Main の Color を使用します。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td>Mid</td><td data-i18n="ao.item.mid">Mid Radius / Strength / Color</td><td data-i18n="ao.multiscale.mid">中距離 AO の半径・強度・色を個別に調整します。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td>Far</td><td data-i18n="ao.item.far">Far Radius / Strength / Color</td><td data-i18n="ao.multiscale.far">遠距離 AO の半径・強度・色を個別に調整します。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="drop-table">
+          <summary><span data-i18n="ao.advanced.title">Advanced Items</span></summary>
+          <div class="terminal-table">
+            <table>
+              <thead><tr><th data-i18n="table.group">GROUP</th><th data-i18n="table.item">ITEM</th><th data-i18n="table.note">NOTE</th><th data-i18n="table.cost">FPS COST</th></tr></thead>
+              <tbody>
+                <tr><td data-i18n="ao.group.sampling">Sampling</td><td data-i18n="ao.item.thickness">Thickness</td><td data-i18n="ao.advanced.thickness">ヒット幅です。陰影の太さに影響します。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td data-i18n="ao.group.sampling">Sampling</td><td data-i18n="ao.item.transparentReduce">Alpha Reduce</td><td data-i18n="ao.advanced.transparentReduce">透明度に応じて AO の影響を弱めます。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td data-i18n="ao.group.sampling">Sampling</td><td data-i18n="ao.item.hitMode">Hit Resolve</td><td data-i18n-html="ao.advanced.hitMode"><code>Stable</code> は安定寄り、<code>Contact</code> は接触影を強めます。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td data-i18n="ao.group.depth">Depth</td><td data-i18n="ao.item.depthBias">Depth Bias</td><td data-i18n="ao.advanced.depthBias">深度の自己干渉を避けるためのバイアスです。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td data-i18n="ao.group.depth">Depth</td><td data-i18n="ao.item.referenceFov">Reference FOV</td><td data-i18n="ao.advanced.referenceFov">FOV 補正の基準になる視野角です。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td data-i18n="ao.group.depth">Depth</td><td data-i18n="ao.item.fovAdjust">FOV Scaling</td><td data-i18n="ao.advanced.fovAdjust">カメラ FOV による半径の見え方を補正します。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td data-i18n="ao.group.depth">Depth</td><td data-i18n="ao.item.fadeMin">Fade Start</td><td data-i18n="ao.advanced.fadeMin">距離フェードの開始位置です。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td data-i18n="ao.group.depth">Depth</td><td data-i18n="ao.item.fadeMax">Fade End</td><td data-i18n="ao.advanced.fadeMax">距離フェードの終了位置です。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td data-i18n="ao.group.noise">Noise</td><td data-i18n="ao.item.spread">Direction Spread</td><td data-i18n="ao.advanced.spread">サンプル方向の広がりを調整します。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td data-i18n="ao.group.noise">Noise</td><td data-i18n="ao.item.jitter">Dither Amount</td><td data-i18n="ao.advanced.jitter">サンプルパターンを散らしてバンディングを抑えます。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td data-i18n="ao.group.noise">Noise</td><td data-i18n="ao.item.depthReject">Depth Filtering</td><td data-i18n="ao.advanced.depthReject">輪郭まわりの不要な影を抑えます。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td data-i18n="ao.group.noise">Noise</td><td data-i18n="ao.item.noiseStability">Pattern Stability</td><td data-i18n="ao.advanced.noiseStability">ノイズ由来のチラつきを抑えます。</td><td><span class="cost"><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+                <tr><td data-i18n="ao.group.noise">Noise</td><td data-i18n="ao.item.hitSpread">Contact Spread</td><td data-i18n="ao.advanced.hitSpread">接触影を少し広げ、硬さを和らげます。</td><td><span class="cost"><svg><use href="#cost-on"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg><svg><use href="#cost-off"></use></svg></span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </div>
+    </section>
+    <section class="view content" data-view="light">
+      <div class="content-shell">
+        <p class="path">/SYSTEM/LIGHT</p>
+        <h2>LIGHT</h2>
+        <p class="content-lead" data-i18n-html="light.lead">
+          Fake Bounce Light は AO とは独立した簡易ライティングです。<br>
+          強くしすぎると白飛びしやすいので、低めから調整してください。
+        </p>
+
+        <div class="terminal-table light-table">
+          <table>
+            <thead><tr><th data-i18n="table.item">ITEM</th><th data-i18n="table.action">WHAT IT DOES</th></tr></thead>
+            <tbody>
+              <tr><td data-i18n="light.item.enable">Fake Bounce Light</td><td data-i18n="light.table.enable">疑似バウンスライトの ON/OFF です。</td></tr>
+              <tr><td data-i18n="light.item.preventBlowout">Prevent Blowout</td><td data-i18n="light.table.preventBlowout">明るい部分の白飛びを抑えながらライトを足します。</td></tr>
+              <tr><td data-i18n="light.item.strength">Strength</td><td data-i18n="light.table.strength">効果の強さです。</td></tr>
+              <tr><td data-i18n="light.item.blur">Blur</td><td data-i18n="light.table.blur">方向色の境界をなだらかにします。</td></tr>
+              <tr><td data-i18n="light.item.blend">Blend Mode</td><td data-i18n-html="light.table.blend"><code>Add</code> / <code>Screen</code> / <code>Multiply</code> / <code>Replace</code> / <code>Color Boost</code> から重ね方を選びます。</td></tr>
+              <tr><td data-i18n="light.item.mask">Mask / Invert Mask</td><td data-i18n="light.table.mask">効果範囲を制御します。</td></tr>
+              <tr><td data-i18n="light.item.maskStrength">Mask Strength</td><td data-i18n="light.table.maskStrength">0 でマスクを無視し、1 でマスクを完全に適用します。</td></tr>
+              <tr><td data-i18n="light.item.color">Color</td><td data-i18n="light.table.color">全体の色味を調整します。</td></tr>
+              <tr><td data-i18n="light.item.power">Directionality</td><td data-i18n="light.table.power">法線方向の指向性を調整します。上げるほど方向色がはっきり出ます。</td></tr>
+              <tr><td data-i18n="light.item.normalBlend">Normal Blend</td><td data-i18n="light.table.normalBlend">方向色同士の混ざりやすさを調整します。上げるほど境界が柔らかくなります。</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="view content" data-view="qa">
+      <div class="content-shell">
+        <p class="path">/SYSTEM/Q_AND_A</p>
+        <h2>Q&A</h2>
+        <div class="qa-list">
+          <article>
+            <h3 data-i18n="qa.update.title">アップデートするときは？</h3>
+            <p data-i18n-html="qa.update.body">一度既存の <code>lilSSRT</code> を削除してから、新しいバージョンをインポートしてください。</p>
+          </article>
+          <article>
+            <h3 data-i18n="qa.mirror.title">ミラー内で AO が適用されません</h3>
+            <p data-i18n-html="qa.mirror.body"><code>Assets/MeltzzZ/lilSSRT/lilSSRT.prefab</code> をアバター直下へ設置してください。</p>
+          </article>
+          <article>
+            <h3 data-i18n="qa.sceneView.title">Sceneビューで AO が表示されません</h3>
+            <p data-i18n-html="qa.sceneView.body">Sceneビューが <code>Orthographic</code> のとき、AO は表示されません。右上のギズモ表示が <code>Persp</code> になっているか確認してください。<br>また、上部ツールバーの <code>Light</code> が無効の場合も AO は表示されません。Light アイコンを有効にしてください。</p>
+            <div class="qa-image-grid">
+              <figure>
+                <img src="readme-assets/images/qa_scene_projection.png" alt="Sceneビュー右上の表示がPerspになっている状態">
+                <figcaption data-i18n="qa.sceneView.projectionCaption">右上が Persp なら透視投影です。Orthographic / Iso では AO が出ません。</figcaption>
+              </figure>
+              <figure>
+                <img src="readme-assets/images/qa_scene_light.png" alt="Sceneビュー上部ツールバーのLightアイコン">
+                <figcaption data-i18n="qa.sceneView.lightCaption">上部ツールバーの Light アイコンを有効にしてください。</figcaption>
+              </figure>
+            </div>
+          </article>
+          <article>
+            <h3 data-i18n="qa.lightCameras.title">カメラが5台入っていて重そう</h3>
+            <p data-i18n-html="qa.lightCameras.body">アニメーションで 1フレームにつき1台だけ描画され、描画解像度も <code>16x16</code> なので、見た目ほど負荷は大きくありません。</p>
+          </article>
+          <article>
+            <h3 data-i18n="qa.propertyMenu.title">別のマテリアルへ設定を移したい</h3>
+            <p data-i18n-html="qa.propertyMenu.body">AO または Fake Bounce Light の見出し右側にあるメニューから <code>Copy</code>、<code>Paste</code>、<code>Paste with Texture</code>、<code>Reset</code> を使用できます。</p>
+          </article>
+          <article>
+            <h3 data-i18n="qa.performance.title">重いときは何を下げる？</h3>
+            <p data-i18n-html="qa.performance.body">まず <code>Quality</code> を下げます。さらに軽くしたい場合は <code>Evaluation</code> を <code>Vertex</code> にし、Multi-Scale AO を無効にしてください。</p>
+          </article>
+          <article>
+            <h3 data-i18n="qa.multiscale.title">Multi-Scale AO は重い？</h3>
+            <p data-i18n-html="qa.multiscale.body">有効化すると品質プリセットの <code>Steps</code> が1.5倍になり、描画負荷が増加します。負荷が気になる場合は <code>Quality</code> を下げてください。</p>
+          </article>
+          <article>
+            <h3 data-i18n="qa.color.title">色が強すぎる</h3>
+            <p data-i18n-html="qa.color.body">AO の <code>Color</code> と Fake Bounce の <code>Strength / Directionality</code> を下げ、<code>Blend Mode</code> や <code>Normal Blend</code> を見直してください。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="readme-assets/locales/readme.ja.js?v=20260716"></script>
+  <script src="readme-assets/locales/readme.en.js?v=20260716"></script>
+  <script src="readme-assets/app.js?v=20260716"></script>
+  <script>
+    document.querySelectorAll(".setup-tip-image img").forEach((image) => {
+      image.addEventListener("error", () => {
+        image.hidden = true;
+        image.parentElement.classList.add("is-placeholder");
+        image.parentElement.setAttribute("data-placeholder", image.dataset.placeholder || "IMAGE");
+      });
+    });
+  </script>
+</body>
+</html>
